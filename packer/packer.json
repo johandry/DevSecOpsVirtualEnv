@@ -15,7 +15,7 @@
         [ "modifyvm", "{{.Name}}", "--memory", "2048" ],
         [ "modifyvm", "{{.Name}}", "--cpus", "2" ]
       ],
-      "http_directory": ".",
+      "http_directory": "packer/",
       "boot_wait": "10s",
       "boot_command": [
         "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter>"
