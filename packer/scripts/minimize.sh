@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-source packer/scripts/common.sh
+message () { echo -e "\033[93;1mSCRIPT:\033[0m ${1}"; }
 
 message "Zeroing out empty area to save space in the final image"
 # Zero out the free space to save space in the final image.  Contiguous

@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-source packer/scripts/common.sh
+message () { echo -e "\033[93;1mSCRIPT:\033[0m ${1}"; }
 
 message "Installing Python Dependencies"
 wget http://www.python.org/ftp/python/2.7.11/Python-2.7.11.tar.xz && \

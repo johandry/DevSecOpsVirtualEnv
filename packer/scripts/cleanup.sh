@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-source packer/scripts/common.sh
+message () { echo -e "\033[93;1mSCRIPT:\033[0m ${1}"; }
 
 message "Removing packages for the kernel"
 if rpm -q --whatprovides kernel | grep -Fqv $(uname -r); then

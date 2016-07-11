@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-source packer/scripts/common.sh
+message () { echo -e "\033[93;1mSCRIPT:\033[0m ${1}"; }
 
 # message "Reducing active consoles to 1"
 # sed -i -e 's,^ACTIVE_CONSOLES=.*$,ACTIVE_CONSOLES=/dev/tty1,' /etc/sysconfig/init

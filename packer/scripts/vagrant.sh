@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-source packer/scripts/common.sh
+message () { echo -e "\033[93;1mSCRIPT:\033[0m ${1}"; }
 
 message "Installing Vagrant SSH key"
 install -v -o vagrant -g vagrant -m 0700 -d /home/vagrant/.ssh

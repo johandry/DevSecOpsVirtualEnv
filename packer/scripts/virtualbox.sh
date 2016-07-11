@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-source packer/scripts/common.sh
+message () { echo -e "\033[93;1mSCRIPT:\033[0m ${1}"; }
 
 if [[ $PACKER_BUILDER_TYPE =~ virtualbox ]]; then
   message "Installing VirtualBox guest additions"
