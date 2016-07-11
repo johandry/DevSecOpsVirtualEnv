@@ -23,4 +23,4 @@ vagrant box add devsecops/centos7 ${SCRIPT_DIR}/vagrant/boxes/centos7.box
 vagrant box list | grep -q devsecops/centos7 && \
   echo "The CentOS 7 box for DevSecOps is ready to use: " && \
   echo "  vagrant up" && \
-  echo "  vagrant status" && \
+  echo "  vagrant status" 
