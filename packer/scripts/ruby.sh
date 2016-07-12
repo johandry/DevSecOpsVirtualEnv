@@ -30,3 +30,6 @@ echo "gem: --no-document" >> /home/vagrant/.gemrc
 chown vagrant.vagrant /home/vagrant/.gemrc
 su - vagrant -c "rbenv install $RUBY_VER"
 su - vagrant -c "rbenv global $RUBY_VER"
+
+message "Installing Rails"
+su - vagrant -c "gem install rails"

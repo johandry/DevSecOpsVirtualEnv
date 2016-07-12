@@ -48,6 +48,7 @@
         "packer/scripts/ruby.sh",
         "packer/scripts/docker.sh",
         "packer/scripts/aws.sh",
+        "packer/scripts/mariadb.sh",
         "packer/scripts/cleanup.sh",
         "packer/scripts/minimize.sh"
       ],
