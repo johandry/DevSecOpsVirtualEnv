@@ -8,7 +8,11 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "devsecops/centos7"
+  if File.file?('vagrant/boxes/CentOS-7-x86_64.box')
+    config.vm.box = "DevSecOps/CentOS_7"
+  else
+    config.vm.box = "johandry/devsecops_centos_7"
+  end
 
   config.vm.hostname = "DevSecOps"
 
@@ -57,6 +61,6 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-  config.vm.provision "shell", path: "vagrant/scripts/RoR.sh"
+  config.vm.provision "shell", path: "vagrant/scripts/update.sh"
 
 end

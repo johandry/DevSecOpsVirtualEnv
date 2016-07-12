@@ -2,7 +2,7 @@
 
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 BOX_FILE=CentOS-7-x86_64
-BOX_NAME=$(grep config.vm.box ${SCRIPT_DIR}/Vagrantfile | sed 's/.*= "\(.*\)"/\1/')
+BOX_NAME='DevSecOps/CentOS_7'
 
 export PACKER_CACHE_DIR=packer/packer_cache
 
@@ -21,8 +21,9 @@ vagrant box list | grep -q "${BOX_NAME}" && \
 echo "Building CentOS 7 box with Packer"
 packer build ${SCRIPT_DIR}/packer/centos7.json
 
-echo "Adding new box to Vagrant"
-vagrant box add ${BOX_NAME} ${SCRIPT_DIR}/vagrant/boxes/${BOX_FILE}.box
+[[ -f ${SCRIPT_DIR}/vagrant/boxes/${BOX_FILE}.box ]] && \
+  echo "Adding new box to Vagrant" && \
+  vagrant box add ${BOX_NAME} ${SCRIPT_DIR}/vagrant/boxes/${BOX_FILE}.box
 
 vagrant box list | grep -q "${BOX_NAME}" && \
   echo -e "\033[93;1mThe new CentOS 7 box for DevSecOps is ready to use:\033[0m" && \
