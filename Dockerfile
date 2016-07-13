@@ -48,8 +48,8 @@ RUN cd /opt  \
     && cd /opt/Python-2.7.11/ && ./configure && make && make install  \
     && cd /opt/Python-3.4.3/ && ./configure && make && make install  \
     && cd \
-    && rm -rf /tmp/Python-2.7.11*  \
-    && rm -rf /tmp/Python-3.4.3*  \
+    && rm -rf /opt/Python-2.7.11*  \
+    && rm -rf /opt/Python-3.4.3*  \
     && yum install -y python-pip  \
     && pip install --upgrade pip
 
