@@ -66,7 +66,22 @@ vagrant_build() {
 }
 
 docker_build(){
-  echo "Wait, it is not completed yet!"
+  IMG_NAME=$(grep '^  config.vm.box =' Vagrantfile | sed 's/.*= "\(.*\)"/\1/')
+
+  echo "NOTE: It is not needed to build this image as DockerHub build it everytime the Dockerfile change"
+  echo "      To use it:"
+  echo "        docker pull ${IMG_NAME}"
+  echo "        docker images"
+  echo "        docker run -it ${IMG_NAME}"
+  echo
+
+  docker build -t ${IMG_NAME} .
+  echo "The image is ready to use:"
+  echo "  docker images"
+  echo "  docker run -it ${IMG_NAME}"
+  echo "And to be destroyed:"
+  echo "  docker rmi ${IMG_NAME}"
+  echo
 }
 
 aws_build(){
