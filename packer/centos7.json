@@ -49,6 +49,8 @@
         "packer/scripts/docker.sh",
         "packer/scripts/aws.sh",
         "packer/scripts/mariadb.sh",
+        "packer/scripts/assumer.sh",
+        "packer/scripts/selfie.sh",
         "packer/scripts/cleanup.sh",
         "packer/scripts/minimize.sh"
       ],
