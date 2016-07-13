@@ -1,8 +1,11 @@
 #!/bin/bash
 
-SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 BOX_FILE=CentOS-7-x86_64
-BOX_NAME='DevSecOps/CentOS_7'
+
+# Get the box name defined in the Vagrantfile
+BOX_NAME=$(grep '^  config.vm.box =' Vagrantfile | sed 's/.*= "\(.*\)"/\1/')
+
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 export PACKER_CACHE_DIR=packer/packer_cache
 

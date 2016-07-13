@@ -1,7 +1,5 @@
 {
   "variables": {
-    "version":            "0.0.2",
-    "cloud_token":        "{{env `VAGRANT_CLOUD_TOKEN`}}",
     "iso_url":            "http://mirror.rackspace.com/CentOS/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso",
     "iso_checksum":       "9ed9ffb5d89ab8cca834afce354daa70a21dcb410f58287d6316259ff89758f5",
     "iso_checksum_type":  "sha256",
@@ -58,18 +56,10 @@
     }
   ],
   "post-processors": [
-    [
       {
         "type": "vagrant",
         "compression_level": "{{user `compression_level`}}",
         "output": "vagrant/boxes/{{user `distro_name`}}.box"
-      },
-      {
-        "type": "vagrant-cloud",
-        "box_tag": "johandry/devsecops_centos_7",
-        "access_token": "{{user `cloud_token`}}",
-        "version": "{{user `version`}}"
       }
-    ]
   ]
 }

@@ -8,11 +8,11 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  if File.file?('vagrant/boxes/CentOS-7-x86_64.box')
-    config.vm.box = "DevSecOps/CentOS_7"
-  else
-    config.vm.box = "johandry/devsecops_centos_7"
-  end
+
+  config.vm.box = "johandry/devsecops_centos_7"
+
+  # For the DevSecOps team, the box may be call 'DevSecOps/CentOS_7'
+  # config.vm.box = "DevSecOps/CentOS_7"
 
   config.vm.hostname = "DevSecOps"
 
