@@ -8,7 +8,7 @@ VAGRANT_CLOUD='https://atlas.hashicorp.com'
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 vagrant_build() {
-  echo -e "\033[93;1mThe new CentOS 7 box for DevSecOps is ready to use:\033[0m"
+  echo -e "\033[93;1mBuilding the environment for Vagrant\033[0m"
 
   # Get the box name defined in the Vagrantfile
   BOX_NAME=$(grep '^  config.vm.box =' Vagrantfile | sed 's/.*= "\(.*\)"/\1/')

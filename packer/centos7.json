@@ -51,6 +51,7 @@
         "packer/scripts/mariadb.sh",
         "packer/scripts/assumer.sh",
         "packer/scripts/selfie.sh",
+        "packer/scripts/restacker.sh",
         "packer/scripts/cleanup.sh",
         "packer/scripts/minimize.sh"
       ],
