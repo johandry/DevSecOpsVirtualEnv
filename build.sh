@@ -2,13 +2,15 @@
 
 # Vagrant Parameters
 BOX_FILE=CentOS-7-x86_64
-USE_LOCAL=0
+BOX_LOCAL=${BOX_LOCAL:-0}
 VAGRANT_CLOUD='https://atlas.hashicorp.com'
 
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 vagrant_build() {
-  echo -e "\033[93;1mBuilding the environment for Vagrant\033[0m"
+  location='to use it locally'
+  [[ $BOX_LOCAL -eq 0 ]] && location='to use it from Vagrant Cloud'
+  echo -e "\033[93;1mBuilding the environment for Vagrant $location\033[0m"
 
   # Get the box name defined in the Vagrantfile
   BOX_NAME=$(grep '^  config.vm.box =' Vagrantfile | sed 's/.*= "\(.*\)"/\1/')
@@ -32,7 +34,7 @@ vagrant_build() {
   echo "Building CentOS 7 box with Packer"
   packer build ${SCRIPT_DIR}/packer/centos7.json
 
-  if [[ $USE_LOCAL -eq 1 ]]; then
+  if [[ $BOX_LOCAL -eq 1 ]]; then
     [[ -f ${SCRIPT_DIR}/vagrant/boxes/${BOX_FILE}.box ]] && \
       echo "Adding new box to Vagrant" && \
       vagrant box add ${BOX_NAME} ${SCRIPT_DIR}/vagrant/boxes/${BOX_FILE}.box
@@ -46,10 +48,16 @@ vagrant_build() {
         echo "  vagrant destroy" && \
         echo
   else
-    echo -e "\033[93;1mUpdate/upload the box to ${VAGRANT_CLOUD}\033[0m"
-    echo "  At this time this process is not automated due to the account limitations. It would be automated later."
+    echo -e "\033[93;1mUpdate/upload the box to Vagrant Cloud\033[0m"
+    echo "  At this time this process is not automated due to the account limitations. The steps are:"
+    echo "    1. Open ${VAGRANT_CLOUD}"
+    echo "    2. Create a new version and enter the description"
+    echo "    3. Select the provider 'VirtualBox'"
+    echo "    4. Upload the file ${SCRIPT_DIR}/vagrant/boxes/${BOX_FILE}.box"
+    echo "    5. Click on Finish and go to Versions"
+    echo "    6. Click on the unreleased link then in 'Release Version' button"
     echo -e "\033[93;1mOnce the box is updated in Vagrant Could it will be ready to be used:\033[0m"
-    echo "  vagrant init ${BOX_NAME}"
+    echo "  vagrant init ${BOX_NAME}  # Optional, you can use the provided Vagrantfile"
     echo "  vagrant up"
     echo "  vagrant status"
     echo "  vagrant ssh"

@@ -5,6 +5,7 @@ message () { echo -e "\033[93;1mSCRIPT:\033[0m ${1}"; }
 message "Installing Assumer"
 mkdir -p /home/vagrant/toolkit && cd $_
 git clone https://github.com/devsecops/assumer
+chown -R vagrant.vagrant /home/vagrant/toolkit 
 
 su - vagrant -c "cd /home/vagrant/toolkit/assumer/source && gem build assumer.gemspec"
 su - vagrant -c "cd /home/vagrant/toolkit/assumer/source && gem install assumer-*.gem"
