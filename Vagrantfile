@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
 
-  config.vm.box = "johandry/devsecops_centos_7"
+  config.vm.box = "johandry/DevSecOps_CentOS_7"
 
   # For the DevSecOps team, the box may be call 'DevSecOps/CentOS_7'
   # config.vm.box = "DevSecOps/CentOS_7"

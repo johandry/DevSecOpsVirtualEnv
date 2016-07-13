@@ -1,14 +1,19 @@
 #!/bin/bash
 
+# Vagrant Parameters
+BOX_FILE=CentOS-7-x86_64
+USE_LOCAL=0
+VAGRANT_CLOUD='https://atlas.hashicorp.com'
+
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+
 vagrant_build() {
-  BOX_FILE=CentOS-7-x86_64
-  USE_LOCAL=0
-  VAGRANT_CLOUD='https://atlas.hashicorp.com/johandry/boxes/DevSecOps_CentOS_7'
+  echo -e "\033[93;1mThe new CentOS 7 box for DevSecOps is ready to use:\033[0m"
 
   # Get the box name defined in the Vagrantfile
   BOX_NAME=$(grep '^  config.vm.box =' Vagrantfile | sed 's/.*= "\(.*\)"/\1/')
-
-  SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+  box=(${BOX_NAME//\// }) # box = [ account_name, box_name ]
+  VAGRANT_CLOUD="${VAGRANT_CLOUD}/${box[0]}/boxes/${box[1]}"
 
   export PACKER_CACHE_DIR=packer/packer_cache
 
@@ -56,8 +61,12 @@ docker_build(){
   echo "Wait, it is not completed yet!"
 }
 
+aws_build(){
+  echo "Wait, it is not completed yet!"
+}
+
 builder=vagrant_build
 [[ "$1" -eq "--vagrant" ]] && builder=vagrant_build
 [[ "$1" -eq "--docker"  ]] && builder=docker_build
-
+[[ "$1" -eq "--aws"     ]] && builder=aws_build
 eval "${builder}"
