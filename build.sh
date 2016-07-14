@@ -11,6 +11,10 @@ IMG_NAME='johandry/devsecops'
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 vagrant_build() {
+  [[ -z $(vagrant --version 2>/dev/null) ]] && \
+    echo -ne "\x1B[91;1m[ ERROR ]\x1B[0m\x1B[93;1m  Vagrant\x1B[0m not found\n" && \
+    exit 1
+
   location='to use it locally'
   [[ $BOX_LOCAL -eq 0 ]] && location='to use it from Vagrant Cloud'
   echo -e "\033[93;1mBuilding the environment for Vagrant $location\033[0m"
@@ -60,6 +64,10 @@ vagrant_build() {
 }
 
 docker_build(){
+  [[ -z $(docker --version 2>/dev/null) ]] && \
+    echo -ne "\x1B[91;1m[ ERROR ]\x1B[0m\x1B[93;1m  Docker\x1B[0m not found\n" && \
+    exit 1
+
   dkr_username=$(echo ${IMG_NAME} | cut -f1 -d'/')
   echo -e "\033[93;1mLogin to DockerHub as ${dkr_username}\033[0m"
   docker login -u ${dkr_username}
@@ -79,6 +87,10 @@ docker_build(){
 aws_build(){
   echo "Wait, it is not completed yet!"
 }
+
+[[ -z $(packer --version 2>/dev/null) ]] && \
+  echo -ne "\x1B[91;1m[ ERROR ]\x1B[0m\x1B[93;1m  Packer\x1B[0m not found\n" && \
+  exit 1
 
 builder=vagrant_build
 [[ "$1" -eq "--vagrant" ]] && builder=vagrant_build
