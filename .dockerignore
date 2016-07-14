@@ -1,0 +1,15 @@
+# Git stuff
+.git*
+
+# Vagrant stuff
+.vagrant/*
+vagrant/*
+Vagrantfile
+
+# Packer stuff
+packer
+
+# Project stuff
+build.sh
+LICENSE
+README.md

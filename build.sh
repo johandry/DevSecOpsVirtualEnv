@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# Vagrant Parameters
+# Vagrant Settings
 BOX_FILE=CentOS-7-x86_64
 BOX_LOCAL=${BOX_LOCAL:-0}
 VAGRANT_CLOUD='https://atlas.hashicorp.com'
+
+# Docker Settings
+IMG_NAME='johandry/devsecops'
 
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
@@ -31,6 +34,8 @@ vagrant_build() {
     echo "Removing old box ${BOX_NAME} from Vagrant" && \
     vagrant box remove ${BOX_NAME}
 
+  mkdir -p ${SCRIPT_DIR}/vagrant/boxes
+
   echo "Building CentOS 7 box with Packer"
   packer build ${SCRIPT_DIR}/packer/centos7.json
 
@@ -49,39 +54,26 @@ vagrant_build() {
         echo
   else
     echo -e "\033[93;1mUpdate/upload the box to Vagrant Cloud\033[0m"
-    echo "  At this time this process is not automated due to the account limitations. The steps are:"
-    echo "    1. Open ${VAGRANT_CLOUD}"
-    echo "    2. Create a new version and enter the description"
-    echo "    3. Select the provider 'VirtualBox'"
-    echo "    4. Upload the file ${SCRIPT_DIR}/vagrant/boxes/${BOX_FILE}.box"
-    echo "    5. Click on Finish and go to Versions"
-    echo "    6. Click on the unreleased link then in 'Release Version' button"
-    echo -e "\033[93;1mOnce the box is updated in Vagrant Could it will be ready to be used:\033[0m"
-    echo "  vagrant init ${BOX_NAME}  # Optional, you can use the provided Vagrantfile"
-    echo "  vagrant up"
-    echo "  vagrant status"
-    echo "  vagrant ssh"
+    echo "  Follow the process in the README.md and upload the file ${SCRIPT_DIR}/vagrant/boxes/${BOX_FILE}.box"
     echo
   fi
 }
 
 docker_build(){
-  IMG_NAME=$(grep '^  config.vm.box =' Vagrantfile | sed 's/.*= "\(.*\)"/\1/')
-
-  echo "NOTE: It is not needed to build this image as DockerHub build it everytime the Dockerfile change"
-  echo "      To use it:"
-  echo "        docker pull ${IMG_NAME}"
-  echo "        docker images"
-  echo "        docker run -it ${IMG_NAME}"
-  echo
+  dkr_username=$(echo ${IMG_NAME} | cut -f1 -d'/')
+  echo -e "\033[93;1mLogin to DockerHub as ${dkr_username}\033[0m"
+  docker login -u ${dkr_username}
 
   docker build -t ${IMG_NAME} .
-  echo "The image is ready to use:"
-  echo "  docker images"
-  echo "  docker run -it ${IMG_NAME}"
-  echo "And to be destroyed:"
-  echo "  docker rmi ${IMG_NAME}"
-  echo
+  docker push ${IMG_NAME}
+
+  docker images | grep -q johandry/devsecops && \
+    echo -e "\033[93;1mThe new CentOS 7 image for DevSecOps is ready to use:\033[0m" && \
+    echo "  docker images" && \
+    echo "  docker run -it ${IMG_NAME}" && \
+    echo "And to be destroyed:" && \
+    echo "  docker rmi ${IMG_NAME}" && \
+    echo
 }
 
 aws_build(){
