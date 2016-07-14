@@ -1,9 +1,19 @@
 
 # DevSecOpsVirtualEnv
 
-This is a tool to build a virtual environment for the [DevSecOps Bootcamp](https://github.com/devsecops/bootcamp) up to date and with all the software and tools required for the bootcamp, and to be used in different platforms such as Vagrant, Docker or AWS.
+This is a tool to build a virtual environment for the [DevSecOps Bootcamp](https://github.com/devsecops/bootcamp), up to date and with all the software and tools required for such bootcamp. Also to be used with different platforms such as Vagrant, Docker or AWS.
 
-During the DevSecOps Bootcamp the students create a virtual machine using Vagrant with some of the packages and software required for the bootcamp. Eventually other tools from the DevSecOps Toolkit are added to the machine. Every time the machine need to be provisioned it takes a lot of time, time that could be invested in learning, also those installed software and tools disappear and have to be installed again. To avoid this delays DevSecOpsVirtualEnv build an updated environment with all the required software and tools from the DevSecOps Toolkit. It also give the option to use other platforms such as Docker or AWS.
+During the DevSecOps Bootcamp the students create a virtual machine using Vagrant with some of the packages and software required. Eventually other tools from the DevSecOps Toolkit are added to the machine. Every time the machine need to be provisioned it takes a lot of time, time that could be invested in learning, also those installed software and tools disappear and have to be installed again. To avoid these delays DevSecOpsVirtualEnv builded an up to date environment with all the required software and tools from the DevSecOps Toolkit. It also give the option to use other platforms such as Docker or AWS.
+
+## Table of Content
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Build an Environment](#build-an-environment)
+  - [Vagrant](#vagrant)
+  - [Docker](#docker)
+  - [AWS](#aws)
+- [TODO](#todo)
 
 ## Requirements
 ---
@@ -11,6 +21,10 @@ During the DevSecOps Bootcamp the students create a virtual machine using Vagran
 If you are on macOS it is recommended, but not required, to install [Homebrew](http://brew.sh/), it will help you to install everything from the command line.
 
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+[Packer](https://www.packer.io/) is required to build the vagrant box or the AMI. Download the installer for your operative system and architecture from https://www.packer.io/downloads.html or use Homebrew to install it (just on macOS).
+
+        brew install packer
 
 Depending of the DevSecOps environment platform you feel more comfortable you need to install [Vagrant](https://www.vagrantup.com/) or [Docker](https://www.docker.com/).
 
@@ -21,10 +35,6 @@ If you are on macOS it can be installed with Homebrew Cask. You need to install 
     brew cask install virtualbox
     brew cask install vagrant
     brew cask install vagrant-manager
-
-It is also required [Packer](https://www.packer.io/) to build the vagrant box. Download the installer for your operative system and architecture from https://www.packer.io/downloads.html or use Homebrew to install it (just on macOS).
-
-    brew install packer
 
 To test it, check the version and create a VM with CentOS or whatever Linux you like.
 
@@ -54,6 +64,7 @@ To test it, check the version, run an image with Nginx, run another with centos,
     docker images
     docker rmi $(docker images -a -q)
 
+For more information go to https://docs.docker.com/
 
 ## Installation
 ---
@@ -69,13 +80,13 @@ The environment can be builded for different platforms using the script `build.s
 
 ### Vagrant
 
-To build it, use the parameter `--vagrant` - or nothing - with the build script.
+To build it, use the parameter `--vagrant`, or nothing, it is the default option.
 
     ./build.sh --vagrant
 
 This process will take a while, so be patience.
 
-The build script will destroy the virtual machine running, remove previous box created and create the new box using Packer. Once the box is builded you can use the box file or publish it on [Vagrant Cloud](https://atlas.hashicorp.com/vagrant) so others - students - can use it.
+The build script will destroy the virtual machine running, remove the previous box created and create the new box using Packer. Once the box is ready you can use the box file or publish it on [Vagrant Cloud](https://atlas.hashicorp.com/vagrant) so others - students - can use it.
 
 To use the box from the __filesystem__ (the created file), the `build.sh` script will do it for you if you export the variable `BOX_LOCAL` set to 1.
 
@@ -87,11 +98,11 @@ To use the box from __Vagrant Cloud__ so everybody (i.e. Bootcamp students) can 
     export BOX_LOCAL=0  
     ./build.sh --vagrant
 
-To make it available, it have to be upload first. _This process can and will be automated_.
+To make it available, it have to be uploaded first. _This process can and will be automated_.
   1. Go to https://atlas.hashicorp.com/vagrant and login.
   1. Go to the box __DevSecOps_CentOS_7__.
   1. Create a new version going to __New Version__ at the left menu.
-  1. Enter the version number. Make sure it is compatible with [RubyGems versioning](http://guides.rubygems.org/patterns/#semantic-versioning.
+  1. Enter the version number. Make sure it is compatible with [RubyGems versioning](http://guides.rubygems.org/patterns/#semantic-versioning).
   1. Enter the description. You can use the description of the previous version and add what is new.
   1. Click on __Create new provider__.
   1. Select the provider __VirtualBox__ and __Upload__. Click on __Continue to upload__.
