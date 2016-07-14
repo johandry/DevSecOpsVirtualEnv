@@ -19,6 +19,7 @@ boxes/*
 # Packer stuff to ignore
 packer_cache/
 *.box
+output-virtualbox-iso/
 
 # Ruby stuff to ignore
 *.gem
@@ -48,6 +49,3 @@ packer_cache/
 Gemfile.lock
 .ruby-version
 .ruby-gemset
-
-# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
-.rvmrc

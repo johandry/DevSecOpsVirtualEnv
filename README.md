@@ -49,7 +49,7 @@ To test it, check the version and create a VM with CentOS or whatever Linux you 
 
 For more information go to https://www.vagrantup.com/docs/
 
-To use __Docker__ go to https://www.docker.com/products/docker and download the installer for your operative system. But again, if you are on macOS it can be done with Homebrew Cask.
+To use __Docker__ go to https://www.docker.com/products/docker and download the installer for your operative system then follow the instructions for [macOS](https://docs.docker.com/docker-for-mac/) or [Windows](https://docs.docker.com/docker-for-windows/). But again, if you are on macOS it can be done with Homebrew Cask (not recommended at this time _July 2016_).
 
     brew cask install dockertoolbox
 
@@ -84,7 +84,7 @@ To build it, use the parameter `--vagrant`, or nothing, it is the default option
 
     ./build.sh --vagrant
 
-This process will take a while, so be patience.
+This process will take a while, around 2 hours depending of your internet bandwidth, so be patience.
 
 The build script will destroy the virtual machine running, remove the previous box created and create the new box using Packer. Once the box is ready you can use the box file or publish it on [Vagrant Cloud](https://atlas.hashicorp.com/vagrant) so others - students - can use it.
 
@@ -130,11 +130,13 @@ To build the image for Docker execute the `build.sh` script with the parameter `
 
     ./build.sh --docker
 
+The docker build is way more faster than the vagrant build and it - automatically - upload the image to Docker Hub, something that - at this time - have to be done manually with the vagrant build. The docker build takes around 15 minutes depending of your internet bandwidth.
+
 Once the image is created, the script will upload it to DockerHub. Now you can pull it, check it and run it. When it is not needed, you may delete the container and image.
 
     docker pull johandry/devsecops    # Unnecessary if was recently builded
     docker images
-    docker run -it johandry/devsecops
+    docker run -it --rm --name devsecops -v ${PWD}/workspace:/root/workspace johandry/devsecops
 
     docker rm $(docker ps -a | grep johandry/devsecops | cut -f1 -d\ )
     docker rmi johandry/devsecops
@@ -142,6 +144,12 @@ Once the image is created, the script will upload it to DockerHub. Now you can p
 If the image is already in DockerHub, just need to run it.
 
     docker run -it johandry/devsecops
+
+The parameter `-v ${pwd}/workspace:/root/workspace` when you run the container can be avoided if you share the directory (if it is not already shared) using the __File Sharing__ tab in the Docker Preferences.
+  1. Click on the Docker icon (the whale with containers).
+  1. Select __Preferences__ and go to the __File Shareing__ tab.
+  1. Add the volume you want to share with the container (if not already there).
+  1. Click __Apply & Restart__ to make the new directory available in every container.
 
 ### AWS
 

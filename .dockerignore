@@ -1,15 +1,35 @@
 # Git stuff
-.git*
+.git/
+.gitignore
 
 # Vagrant stuff
-.vagrant/*
+/.vagrant
 vagrant/*
 Vagrantfile
+boxes/*
+/.vagrant
 
 # Packer stuff
-packer
+packer/
+packer_cache/
+*.box
+output-virtualbox-iso/
 
 # Project stuff
 build.sh
 LICENSE
 README.md
+
+# OS-specific
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# Editor swapfiles
+.*.sw?
+*~
+
+# Library or gem files:
+Gemfile.lock
+.ruby-version
+.ruby-gemset

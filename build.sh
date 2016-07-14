@@ -3,10 +3,9 @@
 # Vagrant Settings
 BOX_FILE=CentOS-7-x86_64
 BOX_LOCAL=${BOX_LOCAL:-0}
-VAGRANT_CLOUD='https://atlas.hashicorp.com'
 
 # Docker Settings
-IMG_NAME='johandry/devsecops'
+CONTAINER_NAME='devsecops'
 
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
@@ -22,7 +21,7 @@ vagrant_build() {
   # Get the box name defined in the Vagrantfile
   BOX_NAME=$(grep '^  config.vm.box =' Vagrantfile | sed 's/.*= "\(.*\)"/\1/')
   box=(${BOX_NAME//\// }) # box = [ account_name, box_name ]
-  VAGRANT_CLOUD="${VAGRANT_CLOUD}/${box[0]}/boxes/${box[1]}"
+  VAGRANT_CLOUD="https://atlas.hashicorp.com/${box[0]}/boxes/${box[1]}"
 
   export PACKER_CACHE_DIR=packer/packer_cache
 
@@ -68,19 +67,31 @@ docker_build(){
     echo -ne "\x1B[91;1m[ ERROR ]\x1B[0m\x1B[93;1m  Docker\x1B[0m not found\n" && \
     exit 1
 
+  IMG_NAME=$(grep FROM ${SCRIPT_DIR}/Dockerfile | cut -d\  -f2)
+
   dkr_username=$(echo ${IMG_NAME} | cut -f1 -d'/')
   echo -e "\033[93;1mLogin to DockerHub as ${dkr_username}\033[0m"
   docker login -u ${dkr_username}
 
-  docker build -t ${IMG_NAME} .
+  docker build -t ${IMG_NAME} ${SCRIPT_DIR}/docker/.
   docker push ${IMG_NAME}
 
-  docker images | grep -q johandry/devsecops && \
+  if ! docker images | grep -q ${IMG_NAME}
+  then
+    echo -e "\033[93;1mThe new CentOS 7 image for DevSecOps failed. It cannot be found.\033[0m"
+    exit 1
+  fi
+
+  IMG_DEVSECOPS="${dkr_username}/${CONTAINER_NAME}"
+  [[ "${IMG_DEVSECOPS}" == "${IMG_NAME}" ]] && IMG_DEVSECOPS="${IMG_DEVSECOPS}-host"
+
+  docker build -t ${IMG_DEVSECOPS} .
+  docker push ${IMG_DEVSECOPS}
+
+  docker images | grep -q ${IMG_DEVSECOPS} && \
     echo -e "\033[93;1mThe new CentOS 7 image for DevSecOps is ready to use:\033[0m" && \
     echo "  docker images" && \
-    echo "  docker run -it ${IMG_NAME}" && \
-    echo "And to be destroyed:" && \
-    echo "  docker rmi ${IMG_NAME}" && \
+    echo "  docker run -it --rm --name -v \${PWD}/workspace:/root/workspace ${CONTAINER_NAME} ${IMG_DEVSECOPS}" && \
     echo
 }
 
@@ -93,7 +104,7 @@ aws_build(){
   exit 1
 
 builder=vagrant_build
-[[ "$1" -eq "--vagrant" ]] && builder=vagrant_build
-[[ "$1" -eq "--docker"  ]] && builder=docker_build
-[[ "$1" -eq "--aws"     ]] && builder=aws_build
+[[ "$1" == "--vagrant" ]] && builder=vagrant_build
+[[ "$1" == "--docker"  ]] && builder=docker_build
+[[ "$1" == "--aws"     ]] && builder=aws_build
 eval "${builder}"
