@@ -162,3 +162,4 @@ The idea is to create an AMI using Vagrant and publish it to AWS. It will provid
 - [ ] Would we add other provided? OpenStak?
 - [ ] Would we use Docker as provider in Vagrant or just use docker?
 - [ ] Try Packer build the docker image, instead of using a Dockerfile. Or both.
+- [ ] Add Rspec testing
