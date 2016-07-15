@@ -161,13 +161,15 @@ The idea is to create an AMI using Vagrant and publish it to AWS. It will provid
 ---
 
 - [ ] Make the Paker file publish the box to Vagrant Cloud. It could be done by uploading the box or just the URL of the box previously uploaded to another location.
-- [ ] The Gems Restacker and Selfie are failing the build because aws-sdk cannot be loaded.
-- [ ] Improve the Dockerfile, some commands may not be executed as RUN, instead can be external scripts. Like with Packer or Vagrant
-- [ ] Set a VOLUME in the Dockerfile to sync a folder
+- [X] The Gems Restacker and Selfie are failing the build because aws-sdk cannot be loaded.
+- [X] Improve the Dockerfile.
+- [X] Set a VOLUME in the Dockerfile to sync a folder
 - [ ] Do the AWS provider with Vagrant
 - [ ] Do Vagrant multi-machine to create a Kali VM for the meta-exploits labs. Or, install meta-exploits in this machine.
-- [ ] What other DevSecOps tools or software is required?
+- [ ] Add meta-exploits to CentOS
+- [X] What other DevSecOps tools or software is required?: None, so far
 - [ ] Would we add other provided? OpenStak?
 - [ ] Would we use Docker as provider in Vagrant or just use docker?
 - [ ] Try Packer build the docker image, instead of using a Dockerfile. Or both.
 - [ ] Add Rspec testing
+- [ ] Create a demo and publish it on Youtube
