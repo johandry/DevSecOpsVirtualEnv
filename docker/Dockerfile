@@ -67,16 +67,16 @@ RUN mkdir -p /root/toolkit && \
     /bin/bash --login -c "cd /root/toolkit/assumer/source && gem build assumer.gemspec && gem install assumer-*.gem"
 
 # Install Restacker (DevSecOps Toolkit)
-# RUN mkdir -p /root/toolkit && \
-#    cd $_ && \
-#    git clone https://github.com/devsecops/restacker && \
-#    /bin/bash --login -c "cd /root/toolkit/restacker/source && gem build restacker.gemspec && gem install restacker-*.gem"
+RUN mkdir -p /root/toolkit && \
+    cd $_ && \
+    git clone https://github.com/devsecops/restacker && \
+    /bin/bash --login -c "cd /root/toolkit/restacker/source && bundle && gem build restacker.gemspec && gem install restacker-*.gem"
 
 # Install Selfie (DevSecOps Toolkit)
-# RUN mkdir -p /root/toolkit && \
-#    cd $_ && \
-#    git clone https://github.com/devsecops/selfie && \
-#    /bin/bash --login -c "cd /root/toolkit/selfie && gem build selfie.gemspec && gem install selfie-*.gem"
+RUN mkdir -p /root/toolkit && \
+    cd $_ && \
+    git clone https://github.com/devsecops/selfie && \
+    /bin/bash --login -c "cd /root/toolkit/selfie && bundle && gem build selfie.gemspec && gem install selfie-*.gem"
 
 RUN yum clean all
 
