@@ -91,7 +91,7 @@ docker_build(){
   docker images | grep -q ${IMG_DEVSECOPS} && \
     echo -e "\033[93;1mThe new CentOS 7 image for DevSecOps is ready to use:\033[0m" && \
     echo "  docker images" && \
-    echo "  docker run -it --rm --name -v \${PWD}/workspace:/root/workspace ${CONTAINER_NAME} ${IMG_DEVSECOPS}" && \
+    echo "  docker run -it --rm --name ${CONTAINER_NAME} -v \${PWD}/workspace:/root/workspace ${IMG_DEVSECOPS}" && \
     echo
 }
 
