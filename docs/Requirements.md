@@ -1,11 +1,13 @@
 # Requirements
 
+## Homebrew
 If you are on macOS it is recommended, but not required, to install [Homebrew](http://brew.sh/), it will help you to install everything from the command line.
 
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
+## Packer
 [Packer](https://www.packer.io/) is required to build the vagrant box or the AMI. Download the installer for your operative system and architecture from https://www.packer.io/downloads.html or use Homebrew to install it (just on macOS).
 
 ```bash
@@ -14,6 +16,7 @@ brew install packer
 
 Depending of the DevSecOps environment platform you feel more comfortable you need to install [Vagrant](https://www.vagrantup.com/) or [Docker](https://www.docker.com/).
 
+## Vagrant
 To use __Vagrant__ go to https://www.vagrantup.com/downloads.html and download the installer for your operative system and architecture.
 
 If you are on macOS it can be installed with Homebrew Cask. You need to install VirtualBox then Vagrant, and (optional) [Vagrant Manager](http://vagrantmanager.com/) to manage the virtual machines from a GUI instead of CLI.
@@ -39,6 +42,7 @@ vagrant destroy
 
 For more information go to https://www.vagrantup.com/docs/
 
+## Docker
 To use __Docker__ go to https://www.docker.com/products/docker and download the installer for your operative system then follow the instructions for [macOS](https://docs.docker.com/docker-for-mac/) or [Windows](https://docs.docker.com/docker-for-windows/). But again, if you are on macOS it can be done with Homebrew Cask (not recommended at this time _July 2016_).
 
 ```bash
