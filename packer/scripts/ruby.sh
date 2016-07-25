@@ -17,7 +17,7 @@ export PATH="/home/vagrant/.rbenv/bin:$PATH"
 
 message "rbenv Init"
 echo 'eval "$(rbenv init -)"' >> /home/vagrant/.bash_profile
-
+chown -R vagrant.vagrant /home/vagrant/.bash_profile
 su - vagrant -c 'export PATH="/home/vagrant/.rbenv/bin:$PATH"; eval "$(rbenv init -)"'
 
 message "Installing ruby-build"
@@ -26,7 +26,7 @@ chown -R vagrant.vagrant /home/vagrant/.rbenv/plugins/ruby-build
 rbenv rehash
 
 message "Disable Ruby Docs"
-echo "gem: --no-document" >> /home/vagrant/.gemrc
+echo -ne "install: --no-document\nupdate: --no-document\ngem: --no-document" >> /home/vagrant/.gemrc
 chown vagrant.vagrant /home/vagrant/.gemrc
 su - vagrant -c "rbenv install $RUBY_VER"
 su - vagrant -c "rbenv global $RUBY_VER"

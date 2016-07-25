@@ -15,7 +15,7 @@ ENV PYTHON_3 http://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz
 # Non-root user
 ENV REG_USER devsecops
 
-# Install base packages
+# Install base packages and NodeJS
 RUN yum install -y  epel-release \
                     gcc \
                     make \
@@ -31,28 +31,10 @@ RUN yum install -y  epel-release \
                     vim \
                     xz-libs \
                     sudo \
-                    nfs-utils
-
-# Create non-root user
-RUN useradd -m ${REG_USER}
-
-# Installing Ruby and required gems
-RUN yum install -y  autoconf \
-                    bison \
-                    openssl-devel \
-                    expat-devel \
-                    gettext-devel \
-                    readline-devel \
-                    gcc-c++ \
-                    zlib-devel && \
-    git clone https://github.com/rbenv/rbenv.git /home/${REG_USER}/.rbenv && \
-    git clone https://github.com/rbenv/ruby-build /home/${REG_USER}/.rbenv/plugins/ruby-build && \
-    echo 'export PATH="/home/${REG_USER}/.rbenv/bin:$PATH"' > /etc/profile.d/rbenv-path-setup.sh && \
-    echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv-path-setup.sh && \
-    echo 'install: --no-document\nupdate: --no-document\ngem: --no-document' >> "$HOME/.gemrc" && \
-    /bin/bash --login -c "rbenv install ${RUBY_VER} && rbenv global ${RUBY_VER}" && \
-    /bin/bash --login -c "gem install bundler rails" && \
-    chown -R ${REG_USER}.${REG_USER} /home/${REG_USER}/.rbenv
+                    nfs-utils \
+                    links \
+                    lynx \
+                    nodejs
 
 # Installing Python 2 & 3 (AWS CLI requirement) and pip
 RUN cd /tmp && \
@@ -71,46 +53,66 @@ RUN cd /tmp && \
 # Install AWS CLI
 RUN pip install awscli
 
+
+# Instal Penetration Test Tools
+RUN yum install -y  nmap \
+                    libpcap-devel \
+                    postgresql-devel \
+                    libsqlite3-dev \
+                    sqlite-devel && \
+    curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > /tmp/msfinstall && \
+    chmod 755 /tmp/msfinstall && \
+    /tmp/msfinstall && \
+    rm -f /tmp/msfinstall
+
+# Installing Ruby dependencies
+RUN yum install -y  autoconf \
+                    bison \
+                    openssl-devel \
+                    expat-devel \
+                    gettext-devel \
+                    readline-devel \
+                    gcc-c++ \
+                    zlib-devel && \
+    echo 'export PATH="/home/${REG_USER}/.rbenv/bin:$PATH"' > /etc/profile.d/rbenv-path-setup.sh && \
+    echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv-path-setup.sh
+
+RUN yum clean all
+
+# Create non-root user
+RUN useradd -m ${REG_USER} && \
+    echo "${REG_USER}        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers.d/vagrant
+
+# The following instructions are required to be executed as a non-root user.
+USER ${REG_USER}
+WORKDIR /home/${REG_USER}
+ENV HOME /home/${REG_USER}
+
+# Installing Ruby and required gems
+RUN git clone https://github.com/rbenv/rbenv.git /home/${REG_USER}/.rbenv && \
+    git clone https://github.com/rbenv/ruby-build /home/${REG_USER}/.rbenv/plugins/ruby-build && \
+    echo -ne "install: --no-document\nupdate: --no-document\ngem: --no-document" >> "$HOME/.gemrc" && \
+    /bin/bash --login -c "rbenv install ${RUBY_VER} && rbenv global ${RUBY_VER}" && \
+    /bin/bash --login -c "gem install bundler rails" && \
+    chown -R ${REG_USER}.${REG_USER} /home/${REG_USER}/.rbenv
+
 # Install Assumer (DevSecOps Toolkit)
 RUN mkdir -p /home/${REG_USER}/toolkit && \
     cd $_ && \
     git clone https://github.com/devsecops/assumer && \
-    /bin/bash --login -c "cd /home/${REG_USER}/toolkit/assumer/source && gem build assumer.gemspec && gem install assumer-*.gem" && \
-    chown -R ${REG_USER}.${REG_USER} /home/${REG_USER}/toolkit
+    /bin/bash --login -c "cd /home/${REG_USER}/toolkit/assumer/source && gem build assumer.gemspec && gem install assumer-*.gem"
 
 # Install Restacker (DevSecOps Toolkit)
 RUN mkdir -p /home/${REG_USER}/toolkit && \
     cd $_ && \
     git clone https://github.com/devsecops/restacker && \
-    /bin/bash --login -c "cd /home/${REG_USER}/toolkit/restacker/source && bundle && gem build restacker.gemspec && gem install restacker-*.gem" && \
-    chown -R ${REG_USER}.${REG_USER} /home/${REG_USER}/toolkit
+    /bin/bash --login -c "cd /home/${REG_USER}/toolkit/restacker/source && bundle && gem build restacker.gemspec && gem install restacker-*.gem"
 
 # Install Selfie (DevSecOps Toolkit)
 RUN mkdir -p /home/${REG_USER}/toolkit && \
     cd $_ && \
     git clone https://github.com/devsecops/selfie && \
-    /bin/bash --login -c "cd /home/${REG_USER}/toolkit/selfie && bundle && gem build selfie.gemspec && gem install selfie-*.gem" && \
-    chown -R ${REG_USER}.${REG_USER} /home/${REG_USER}/toolkit
-
-# Instal Penetration Test Tools
-RUN yum install -y nmap \
-      libpcap-devel \
-      postgresql-devel \
-      libsqlite3-dev \
-      sqlite-devel && \
-    curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
-    chmod 755 msfinstall && \
-    ./msfinstall && \
-    rm -f msfinstall
-
-RUN yum clean all
-
-USER ${REG_USER}
-WORKDIR /home/${REG_USER}
-ENV HOME /home/${REG_USER}
-
-# Final step to configure Metasploit as non-root
-RUN msfdb init
+    /bin/bash --login -c "cd /home/${REG_USER}/toolkit/selfie && bundle && gem build selfie.gemspec && gem install selfie-*.gem"
 
 # Login to the container as soon as it run
 CMD ["/bin/bash","--login"]

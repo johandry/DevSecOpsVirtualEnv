@@ -120,14 +120,15 @@ The parameter `-v ${pwd}/workspace:/root/workspace` can be avoided if you share 
 
 The environment builded contain:
 * CentOS 7 (1511)
-* Ruby 2.3.1 with rbenv
-* Gems: Rails, Bundler,
+* Ruby 2.3.1
+* rbenv
 * Python 2.7.11
 * Python 3.4.3
 * Pip
 * AWS CLI
 * PostgreSQL
 * SQLite
+* NodeJS
 * DevSecOps Toolkit
   * Assumer
   * Selfie
@@ -135,12 +136,14 @@ The environment builded contain:
 * PenTest Toolkit
   * Nmap
   * Metasploit
-* Packages: Git, Perl, curl, wget, Vim, EPEL Repo
+* Main Gems: Rails, Bundler, Thor
+* Useful Packages: Git, Perl, Vim, curl, wget, Links, Lynx & EPEL Repo
 
-Only in the Vagrant box is included:
-* Docker (Only in the Vagrant box)
-* MariaDB (Only in the Vagrant box)
-* NodeJS (Only in the Vagrant box)
+The Vagrant box also include (not included in Docker image):
+* Docker
+* MariaDB
+
+MariaDB is not installed with Docker because if needed it is better to run a MariaDB container (i.e from [here](https://github.com/CentOS/CentOS-Dockerfiles/tree/master/mariadb/centos7)) and link them.
 
 ## TODO
 
