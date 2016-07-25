@@ -78,6 +78,16 @@ RUN mkdir -p /root/toolkit && \
     git clone https://github.com/devsecops/selfie && \
     /bin/bash --login -c "cd /root/toolkit/selfie && bundle && gem build selfie.gemspec && gem install selfie-*.gem"
 
+# Instal Penetration Test Tools
+RUN yum install -y nmap \
+      libpcap-devel \
+      postgresql-devel \
+      libsqlite3-dev \
+      sqlite-devel && \
+    mkdir -p /root/toolkit && cd $_ && \
+    git clone https://github.com/rapid7/metasploit-framework.git && cd metasploit-framework && \
+    bundle install
+
 RUN yum clean all
 
 ENV HOME /root
