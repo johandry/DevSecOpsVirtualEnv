@@ -1,70 +1,60 @@
 
 # DevSecOpsVirtualEnv
+---
 
-This is a tool to build a virtual environment for the [DevSecOps Bootcamp](https://github.com/devsecops/bootcamp), up to date and with all the software and tools required for such bootcamp. Also to be used with different platforms such as Vagrant, Docker or AWS.
-
-During the DevSecOps Bootcamp the students create a virtual machine using Vagrant with some of the packages and software required. Eventually other tools from the DevSecOps Toolkit are added to the machine. Every time the machine need to be provisioned it takes a lot of time, time that could be invested in learning, also those installed software and tools disappear and have to be installed again. To avoid these delays DevSecOpsVirtualEnv builded an up to date environment with all the required software and tools from the DevSecOps Toolkit. It also give the option to use other platforms such as Docker or AWS.
+DevSecOpsVirtualEnv is a tool to build a virtual environment for the [DevSecOps Bootcamp](https://github.com/devsecops/bootcamp). This virtual environment is up to date, with all the software and tools required for such bootcamp or DevSecOps activities, and to be used with different platforms such as Vagrant, Docker or AWS.
 
 ## Table of Content
 
+- [Problem & Solution](#problem_&_solution)
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [Build an Environment](#build-an-environment)
-  - [Vagrant](#vagrant)
-  - [Docker](#docker)
-  - [AWS](#aws)
+- [Build an Environment for Vagrant](#build-a-environment-for-virtualbox-with-vagrant)
+- [Build a Environment for Docker](#build-a-environment-for-docker)
+- [Use the Vagrant Environment](#use-the-vagrant-environment)
+- [Use the Docker Environment](#use-the-docker-environment)
 - [TODO](#todo)
+
+## Problem & Solution
+---
+
+During the DevSecOps Bootcamp the students create a virtual machine using Vagrant. Every time the machine need to be provisioned it takes around 30 minutes, time that could be invested in learning. As a side effect, if the machine is destroyed, those installed software and tools disappear and have to be installed again.
+
+To avoid these delays DevSecOps Virtual Environment build an up to date environment with all the required software and tools from the DevSecOps Toolkit. This environment will be created by instructor before the training whenever there is an update (weekly or monthly). This environment also give us the option to use other platforms such as Docker or AWS besides Vagrant.
 
 ## Requirements
 ---
 
-If you are on macOS it is recommended, but not required, to install [Homebrew](http://brew.sh/), it will help you to install everything from the command line.
+In Windows or macOS download the installer for your operative system and architecture. In macOS you can use Homebrew as a CLI alternative.
+
+[Homebrew](http://brew.sh/): Optional and just in macOS
+
 
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    brew --version
 
-[Packer](https://www.packer.io/) is required to build the vagrant box or the AMI. Download the installer for your operative system and architecture from https://www.packer.io/downloads.html or use Homebrew to install it (just on macOS).
+[Packer](https://www.packer.io/downloads.html)
 
-        brew install packer
 
-Depending of the DevSecOps environment platform you feel more comfortable you need to install [Vagrant](https://www.vagrantup.com/) or [Docker](https://www.docker.com/).
+    brew install packer
+    packer --version
 
-To use __Vagrant__ go to https://www.vagrantup.com/downloads.html and download the installer for your operative system and architecture.
+[Vagrant](https://www.vagrantup.com/downloads.html)
 
-If you are on macOS it can be installed with Homebrew Cask. You need to install VirtualBox then Vagrant, and (optional) [Vagrant Manager](http://vagrantmanager.com/) to manage the virtual machines from a GUI instead of CLI.
 
     brew cask install virtualbox
     brew cask install vagrant
-    brew cask install vagrant-manager
-
-To test it, check the version and create a VM with CentOS or whatever Linux you like.
-
-    packer --version
     vagrant --version
-    mkdir -p ~/Sandbox/Vagrant && cd $_
-    vagrant init centos/7
-    vagrant up
-    vagrant ssh
-    vagrant halt
-    vagrant destroy
 
-For more information go to https://www.vagrantup.com/docs/
+    brew cask install vagrant-manager    # Optional
 
-To use __Docker__ go to https://www.docker.com/products/docker and download the installer for your operative system then follow the instructions for [macOS](https://docs.docker.com/docker-for-mac/) or [Windows](https://docs.docker.com/docker-for-windows/). But again, if you are on macOS it can be done with Homebrew Cask (not recommended at this time _July 2016_).
+[Docker](https://www.docker.com/products/docker)
 
-    brew cask install dockertoolbox
 
-To test it, check the version, run an image with Nginx, run another with centos, list all the containers, delete them all and delete all the images.
-
+    brew cask install dockertoolbox      # Recommended manual installation instead of Homebrew
     docker --version
-    docker run -d -p 80:80 --name webserver nginx
-    open http://localhost/  # Or, In a browser, go to http://localhost/
-    docker run -it centos
-    docker ps -a
-    docker rm $(docker ps -a -q)
-    docker images
-    docker rmi $(docker images -a -q)
 
-For more information go to https://docs.docker.com/
+To know more about the requirements, go to [docs/Requirements.md](docs/Requirements.md)
 
 ## Installation
 ---
@@ -73,89 +63,56 @@ Just clone the repository
 
     git clone https://github.com/johandry/DevSecOpsVirtualEnv.git DevSecOpsVirtualEnv && cd $_
 
-## Build an Environment
+## Build a Environment for VirtualBox with Vagrant
 ---
 
-The environment can be builded for different platforms using the script `build.sh`.
+To build it, use the parameter `--vagrant`, or nothing, as it is the default option.
 
-### Vagrant
+    ./build.sh
 
-To build it, use the parameter `--vagrant`, or nothing, it is the default option.
+This process will take a while, around __2 hours__ depending of your internet bandwidth, so be patience. To know more about the build for Vagrant, go to [docs/Vagrant_Build.md](docs/Vagrant_Build.md).
 
-    ./build.sh --vagrant
+## Build a Environment for Docker
 
-This process will take a while, around 2 hours depending of your internet bandwidth, so be patience.
-
-The build script will destroy the virtual machine running, remove the previous box created and create the new box using Packer. Once the box is ready you can use the box file or publish it on [Vagrant Cloud](https://atlas.hashicorp.com/vagrant) so others - students - can use it.
-
-To use the box from the __filesystem__ (the created file), the `build.sh` script will do it for you if you export the variable `BOX_LOCAL` set to 1.
-
-    export BOX_LOCAL=1
-    ./build.sh --vagrant
-
-To use the box from __Vagrant Cloud__ so everybody (i.e. Bootcamp students) can use it, just execute the `build.sh` script or export the variable `BOX_LOCAL` set to 0 (default value) before execute it.
-
-    export BOX_LOCAL=0  
-    ./build.sh --vagrant
-
-To make it available, it have to be uploaded first. _This process can and will be automated_.
-  1. Go to https://atlas.hashicorp.com/vagrant and login.
-  1. Go to the box __DevSecOps_CentOS_7__.
-  1. Create a new version going to __New Version__ at the left menu.
-  1. Enter the version number. Make sure it is compatible with [RubyGems versioning](http://guides.rubygems.org/patterns/#semantic-versioning).
-  1. Enter the description. You can use the description of the previous version and add what is new.
-  1. Click on __Create new provider__.
-  1. Select the provider __VirtualBox__ and __Upload__. Click on __Continue to upload__.
-  1. Choose the created file located in the directory `vagrant/boxes`.
-  1. Click on Finish and go to Versions.
-  1. Click on the __unreleased link__ then in __Release version__ button.
-
-In both cases the box name is __johandry/DevSecOps_CentOS_7__. To change it, modify the `Vagrantfile` in the line
-
-    config.vm.box = "johandry/DevSecOps_CentOS_7"
-
-The first field (`johandry`) is the Vagrant Cloud username and the second field (`DevSecOps_CentOS_7`) is the box name.
-
-To use the box, use the `Vagrantfile` in the repository, use the variable `config.vm.box` in a custom Vagrantfile or with:
-
-    vagrant init johandry/DevSecOps_CentOS_7
-    vagrant up
-    vagrant ssh
-
-### Docker
-
-__NOTE__: It is important to know that it is not needed to build an image because [DockerHub](https://hub.docker.com/) will do it automatically every time the `Dockerfile` change in this GitHub repository.
+It is important to know that it is not needed to build an image because [DockerHub](https://hub.docker.com/) will do it automatically every time the `Dockerfile` change in this GitHub repository.
 
 To build the image for Docker execute the `build.sh` script with the parameter `--docker`, like this:
 
     ./build.sh --docker
 
-The docker build is way more faster than the vagrant build and it - automatically - upload the image to Docker Hub, something that - at this time - have to be done manually with the vagrant build. The docker build takes around 15 minutes depending of your internet bandwidth.
+The docker build takes around 15 minutes depending of your internet bandwidth. To know more about the build for Docker, go to [docs/Docker_Build.md](docs/Docker_Build.md)
+
+## Use the Vagrant Environment
+---
+
+To use the box:
+
+    vagrant init johandry/DevSecOps_CentOS_7
+    vagrant up
+    vagrant ssh
+
+Or, copy the `Vagrantfile` in the repository to your own directory and create a `workspace` directory.
+
+```bash
+mkdir DevSecOps && cd $_
+curl -o Vagrantfile https://raw.githubusercontent.com/johandry/DevSecOpsVirtualEnv/master/Vagrantfile
+mkdir workspace
+vagrant up
+vagrant ssh
+```
+
+## Use the Docker Environment
+---
+
+The docker build is way more faster than the vagrant build and it - automatically - upload the image to Docker Hub, something that - at this time - have to be done manually with the vagrant build.
 
 Once the image is created, the script will upload it to DockerHub. Now you can pull it, check it and run it. When it is not needed, you may delete the container and image.
 
-    docker pull johandry/devsecops    # Unnecessary if was recently builded
-    docker images
+    mkdir DevSecOps && cd $_
+    mkdir workspace
     docker run -it --rm --name devsecops -v ${PWD}/workspace:/root/workspace johandry/devsecops
 
-    docker rm $(docker ps -a | grep johandry/devsecops | cut -f1 -d\ )
-    docker rmi johandry/devsecops
-
-If the image is already in DockerHub, just need to run it.
-
-    docker run -it johandry/devsecops
-
-The parameter `-v ${pwd}/workspace:/root/workspace` when you run the container can be avoided if you share the directory (if it is not already shared) using the __File Sharing__ tab in the Docker Preferences.
-  1. Click on the Docker icon (the whale with containers).
-  1. Select __Preferences__ and go to the __File Shareing__ tab.
-  1. Add the volume you want to share with the container (if not already there).
-  1. Click __Apply & Restart__ to make the new directory available in every container.
-
-### AWS
-
-Ups! This is not done yet.
-
-The idea is to create an AMI using Vagrant and publish it to AWS. It will provide the same advantages as if the VM is running on VirtualBox but instead will be an instance in your AWS account.
+The parameter `-v ${pwd}/workspace:/root/workspace` can be avoided if you share the directory using the __File Sharing__ tab in the Docker Preferences. Read the instructions in [docs/Docker_Build.md](docs/Docker_Build.md).
 
 ## TODO
 ---

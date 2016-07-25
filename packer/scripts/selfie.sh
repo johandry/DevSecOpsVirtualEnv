@@ -7,12 +7,7 @@ mkdir -p /home/vagrant/toolkit && cd $_
 git clone https://github.com/devsecops/selfie
 chown -R vagrant.vagrant /home/vagrant/toolkit
 
-# su - vagrant -c "cd /home/vagrant/toolkit/selfie && gem build selfie.gemspec"
-# ERROR:
-#   Invalid gemspec in [selfie.gemspec]: cannot load such file -- aws-sdk
-#   ERROR:  Error loading gemspec. Aborting.
+su - vagrant -c "cd /home/vagrant/toolkit/selfie && bundle && gem build selfie.gemspec && gem install selfie-*.gem"
 
-# su - vagrant -c "cd /home/vagrant/toolkit/selfie && gem install selfie-*.gem"
-#
-# v=$(su - vagrant -c "selfie --version 2>&1 | tail -1")
-# [[ $v =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && message "Selfie version $v sucessfully installed"
+v=$(su - vagrant -c "selfie --version 2>&1 | tail -1")
+[[ $v =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && message "Selfie version $v sucessfully installed"

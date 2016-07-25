@@ -61,6 +61,13 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-  config.vm.provision "shell", path: "vagrant/scripts/update.sh"
+  if File.exist?("vagrant/scripts/update.sh")
+    config.vm.provision "shell", path: "vagrant/scripts/update.sh"
+  else
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo yum update -y
+      echo -e "\033[93;1mSCRIPT:\033[0mIf the update took a lot of time, then it is time to rebuild the box with Packer."  
+    SHELL
+  end
 
 end
