@@ -2,7 +2,7 @@ FROM centos:7
 
 MAINTAINER "Johandry Amador" <johandry@gmail.com>
 
-ENV IMAGE_NAME johandry/centos7-devsecops
+ENV IMAGE_NAME johandry/devsecops
 ENV IMAGE_VERSION 0.1.3
 
 # Ruby Version to install
