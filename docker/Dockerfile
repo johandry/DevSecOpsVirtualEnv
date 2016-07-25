@@ -14,7 +14,6 @@ ENV PYTHON_3 http://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz
 
 # Non-root user
 ENV REG_USER devsecops
-ENV HOME /home/${REG_USER}
 
 # Install base packages
 RUN yum install -y  epel-release \
@@ -108,5 +107,10 @@ RUN yum clean all
 
 USER ${REG_USER}
 WORKDIR /home/${REG_USER}
+ENV HOME /home/${REG_USER}
 
+# Final step to configure Metasploit as non-root
+RUN msfdb init
+
+# Login to the container as soon as it run
 CMD ["/bin/bash","--login"]
