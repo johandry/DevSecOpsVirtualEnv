@@ -29,30 +29,34 @@ In Windows or macOS download the installer for your operative system and archite
 
 [Homebrew](http://brew.sh/): Optional and just in macOS
 
-
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew --version
+```bash
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew --version
+```
 
 [Packer](https://www.packer.io/downloads.html)
 
-
-    brew install packer
-    packer --version
+```bash
+brew install packer
+packer --version
+```
 
 [Vagrant](https://www.vagrantup.com/downloads.html)
 
+```bash
+brew cask install virtualbox
+brew cask install vagrant
+vagrant --version
 
-    brew cask install virtualbox
-    brew cask install vagrant
-    vagrant --version
-
-    brew cask install vagrant-manager    # Optional
+brew cask install vagrant-manager    # Optional
+```
 
 [Docker](https://www.docker.com/products/docker)
 
-
-    brew cask install dockertoolbox      # Recommended manual installation instead of Homebrew
-    docker --version
+```bash
+brew cask install dockertoolbox      # Recommended manual installation instead of Homebrew
+docker --version
+```
 
 To know more about the requirements, go to [docs/Requirements.md](docs/Requirements.md)
 
@@ -61,7 +65,9 @@ To know more about the requirements, go to [docs/Requirements.md](docs/Requireme
 
 Just clone the repository
 
-    git clone https://github.com/johandry/DevSecOpsVirtualEnv.git DevSecOpsVirtualEnv && cd $_
+```bash
+git clone https://github.com/johandry/DevSecOpsVirtualEnv.git DevSecOpsVirtualEnv && cd $_
+```
 
 ## Build a Environment for VirtualBox with Vagrant
 ---
@@ -108,9 +114,11 @@ The docker build is way more faster than the vagrant build and it - automaticall
 
 Once the image is created, the script will upload it to DockerHub. Now you can pull it, check it and run it. When it is not needed, you may delete the container and image.
 
-    mkdir DevSecOps && cd $_
-    mkdir workspace
-    docker run -it --rm --name devsecops -v ${PWD}/workspace:/root/workspace johandry/devsecops
+```bash
+mkdir DevSecOps && cd $_
+mkdir workspace
+docker run -it --rm --name devsecops -v ${PWD}/workspace:/root/workspace johandry/devsecops
+```
 
 The parameter `-v ${pwd}/workspace:/root/workspace` can be avoided if you share the directory using the __File Sharing__ tab in the Docker Preferences. Read the instructions in [docs/Docker_Build.md](docs/Docker_Build.md).
 
@@ -122,11 +130,8 @@ The parameter `-v ${pwd}/workspace:/root/workspace` can be avoided if you share 
 - [X] Improve the Dockerfile.
 - [X] Set a VOLUME in the Dockerfile to sync a folder
 - [ ] Do the AWS provider with Vagrant
-- [ ] Do Vagrant multi-machine to create a Kali VM for the meta-exploits labs. Or, install meta-exploits in this machine.
-- [ ] Add meta-exploits to CentOS
+- [X] Add metasploit to CentOS
 - [X] What other DevSecOps tools or software is required?: None, so far
-- [ ] Would we add other provided? OpenStak?
-- [ ] Would we use Docker as provider in Vagrant or just use docker?
 - [ ] Try Packer build the docker image, instead of using a Dockerfile. Or both.
 - [ ] Add Rspec testing
 - [ ] Create a demo and publish it on Youtube
