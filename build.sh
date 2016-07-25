@@ -67,11 +67,13 @@ docker_build(){
     echo -ne "\x1B[91;1m[ ERROR ]\x1B[0m\x1B[93;1m  Docker\x1B[0m not found\n" && \
     exit 1
 
-  IMG_NAME=$(grep FROM ${SCRIPT_DIR}/Dockerfile | cut -d\  -f2)
+  IMG_NAME=$(grep IMAGE_NAME ${SCRIPT_DIR}/docker/Dockerfile | cut -d\  -f3)
 
   dkr_username=$(echo ${IMG_NAME} | cut -f1 -d'/')
-  echo -e "\033[93;1mLogin to DockerHub as ${dkr_username}\033[0m"
-  docker login -u ${dkr_username}
+  cat  ${HOME}/.docker/config.json | tr -d '\n' | grep -q '"https://index.docker.io/.*":.*{.*"auth": ".\{1,\}"' || (
+    echo -e "\033[93;1mLogin to DockerHub as ${dkr_username}\033[0m. If ${dkr_username} is not your user, press Ctrl+C and modify the Dockerfile"
+    docker login -u ${dkr_username}
+  )
 
   docker build -t ${IMG_NAME} ${SCRIPT_DIR}/docker/.
   docker push ${IMG_NAME}
@@ -82,17 +84,14 @@ docker_build(){
     exit 1
   fi
 
-  IMG_DEVSECOPS="${dkr_username}/${CONTAINER_NAME}"
-  [[ "${IMG_DEVSECOPS}" == "${IMG_NAME}" ]] && IMG_DEVSECOPS="${IMG_DEVSECOPS}-host"
+  container_user=$(grep 'ENV REG_USER' ${SCRIPT_DIR}/docker/Dockerfile | cut -d\  -f3)
 
-  docker build -t ${IMG_DEVSECOPS} .
-  docker push ${IMG_DEVSECOPS}
-
-  docker images | grep -q ${IMG_DEVSECOPS} && \
-    echo -e "\033[93;1mThe new CentOS 7 image for DevSecOps is ready to use:\033[0m" && \
-    echo "  docker images" && \
-    echo "  docker run -it --rm --name ${CONTAINER_NAME} -v \${PWD}/workspace:/root/workspace ${IMG_DEVSECOPS}" && \
+  docker images | grep -q ${IMG_NAME} && (
+    echo -e "\033[93;1mThe new CentOS 7 image for DevSecOps is ready to use:\033[0m"
+    echo "  docker images"
+    echo "  docker run -it --rm --name ${CONTAINER_NAME} -v \${PWD}/workspace:/home/${container_user}/workspace ${IMG_NAME}"
     echo
+  )
 }
 
 aws_build(){

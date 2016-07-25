@@ -16,14 +16,12 @@ DevSecOpsVirtualEnv is a tool to build a virtual environment for the [DevSecOps 
 - [TODO](#todo)
 
 ## Problem & Solution
----
 
 During the DevSecOps Bootcamp the students create a virtual machine using Vagrant. Every time the machine need to be provisioned it takes around 30 minutes, time that could be invested in learning. As a side effect, if the machine is destroyed, those installed software and tools disappear and have to be installed again.
 
 To avoid these delays DevSecOps Virtual Environment build an up to date environment with all the required software and tools from the DevSecOps Toolkit. This environment will be created by instructor before the training whenever there is an update (weekly or monthly). This environment also give us the option to use other platforms such as Docker or AWS besides Vagrant.
 
 ## Requirements
----
 
 In Windows or macOS download the installer for your operative system and architecture. In macOS you can use Homebrew as a CLI alternative.
 
@@ -61,7 +59,6 @@ docker --version
 To know more about the requirements, go to [docs/Requirements.md](docs/Requirements.md)
 
 ## Installation
----
 
 Just clone the repository
 
@@ -70,7 +67,6 @@ git clone https://github.com/johandry/DevSecOpsVirtualEnv.git DevSecOpsVirtualEn
 ```
 
 ## Build a Environment for VirtualBox with Vagrant
----
 
 To build it, use the parameter `--vagrant`, or nothing, as it is the default option.
 
@@ -89,7 +85,6 @@ To build the image for Docker execute the `build.sh` script with the parameter `
 The docker build takes around 15 minutes depending of your internet bandwidth. To know more about the build for Docker, go to [docs/Docker_Build.md](docs/Docker_Build.md)
 
 ## Use the Vagrant Environment
----
 
 To use the box:
 
@@ -108,7 +103,6 @@ vagrant ssh
 ```
 
 ## Use the Docker Environment
----
 
 The docker build is way more faster than the vagrant build and it - automatically - upload the image to Docker Hub, something that - at this time - have to be done manually with the vagrant build.
 
@@ -122,8 +116,34 @@ docker run -it --rm --name devsecops -v ${PWD}/workspace:/root/workspace johandr
 
 The parameter `-v ${pwd}/workspace:/root/workspace` can be avoided if you share the directory using the __File Sharing__ tab in the Docker Preferences. Read the instructions in [docs/Docker_Build.md](docs/Docker_Build.md).
 
+## What's included in the environment?
+
+The environment builded contain:
+* CentOS 7 (1511)
+* Ruby 2.3.1 with rbenv
+* Gems: Rails, Bundler,
+* Python 2.7.11
+* Python 3.4.3
+* Pip
+* AWS CLI
+* PostgreSQL
+* SQLite
+* DevSecOps Toolkit
+  * Assumer
+  * Selfie
+  * Restacker
+* PenTest Toolkit
+  * Nmap
+  * Metasploit
+* Packages: Git, Perl, curl, wget, Vim, EPEL Repo
+
+Only in the Vagrant box is included:
+* Docker (Only in the Vagrant box)
+* MariaDB (Only in the Vagrant box)
+* NodeJS (Only in the Vagrant box)
+
 ## TODO
----
+
 
 - [ ] Make the Paker file publish the box to Vagrant Cloud. It could be done by uploading the box or just the URL of the box previously uploaded to another location.
 - [X] The Gems Restacker and Selfie are failing the build because aws-sdk cannot be loaded.
