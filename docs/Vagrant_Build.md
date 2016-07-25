@@ -55,8 +55,8 @@ The `packer/centos7.json` is the Packer file. It has 4 sections: variables, buil
 Packer is using `CentOS-7-x86_64-NetInstall-1511.iso` but if there is a newer version of CentOS or if you wish to use other Linux such as RedHat, Fedora or even Ubuntu, go to the `packer/centos7.json` and modify the following lines:
 
 ```json
-    "iso_url":            "http://mirror.rackspace.com/CentOS/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso",
-    "iso_checksum":       "9ed9ffb5d89ab8cca834afce354daa70a21dcb410f58287d6316259ff89758f5",
+"iso_url":            "http://mirror.rackspace.com/CentOS/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1511.iso",
+"iso_checksum":       "9ed9ffb5d89ab8cca834afce354daa70a21dcb410f58287d6316259ff89758f5",
 ```
 
 The first line is the URL of the ISO file to download. The second line is the ISO checksum, in this case is in type SHA256. To use a different checksum type, modify the parameter `iso_checksum_type` If you will use other Linux distro but CentOS, would be nice to modify the parameter `distro_name` and make sure the scripts will run (i.e replace yum for apt)
