@@ -1,7 +1,7 @@
 # Vagrant Build
 ---
 
-The build script will destroy the virtual machine running, remove the previous box created and create the new box using Packer. Once the box is ready you can use the box file or publish it on [Vagrant Cloud](https://atlas.hashicorp.com/vagrant) so others - students - can use it.
+The build script will destroy the virtual machine running, remove the previous box created and create the new box using Packer. Once the box is ready you can use the box file or publish it on [Vagrant Cloud](https://atlas.hashicorp.com/vagrant) so others, i.e. students, can use it.
 
 ## Using the local box
 To use the box from the __filesystem__ (the created file), the `build.sh` script will do it for you if you export the variable `BOX_LOCAL` set to 1.

@@ -19,7 +19,7 @@ DevSecOpsVirtualEnv is a tool to build a virtual environment for the [DevSecOps 
 
 During the DevSecOps Bootcamp the students create a virtual machine using Vagrant. Every time the machine need to be provisioned it takes around 30 minutes, time that could be invested in learning. As a side effect, if the machine is destroyed, those installed software and tools disappear and have to be installed again.
 
-To avoid these delays DevSecOps Virtual Environment build an up to date environment with all the required software and tools from the DevSecOps Toolkit. This environment will be created by instructor before the training whenever there is an update (weekly or monthly). This environment also give us the option to use other platforms such as Docker or AWS besides Vagrant.
+To avoid these delays, DevSecOps Virtual Environment build an up to date environment with all the required software and tools from the DevSecOps Toolkit. This environment will be created by instructor before the training whenever there is an update (weekly or monthly). This environment also give us the option to use other platforms such as Docker or AWS besides Vagrant.
 
 ## Requirements
 

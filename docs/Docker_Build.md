@@ -6,8 +6,9 @@ The docker build is way more faster than the vagrant build and it upload the ima
 When the image is not needed, you may delete the container and image.
 
 ```bash
-docker images
+docker ps -a
 docker rm $(docker ps -a | grep johandry/devsecops | cut -f1 -d\ )
+docker images
 docker rmi johandry/devsecops
 ```
 
@@ -22,10 +23,12 @@ To share the local directory in the container use the parameter `-v ${pwd}/works
 ## Adding more features
 To install more programs to the Docker image open the file `docker/Dockerfile` and add a new `RUN` instructions and join all the commands with double ampersand (&&).
 
-Is that, or create another Dockerfile that include the image `johandry/centos7-devsecops` using the instruction `FROM` like this:
+Other option is to create another Dockerfile that include the image `johandry/devsecops` using the instruction `FROM` like this:
 
 ```dockerfile
-FROM johandry/centos7-devsecops
+FROM johandry/devsecops
+
+RUN yum install -y java-1.7.0-openjdk java-1.7.0-openjdk-devel
 ```
 
 And include a `RUN` instruction to install whatever you need. Or, use the `Dockerfile` located in the project to do the same.
